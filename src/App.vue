@@ -1,23 +1,32 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+      <todos></todos>
   </div>
 </template>
 
 <script>
+import Todos from './components/Todos'
+
 export default {
-  name: 'app'
+    name: 'app',
+    data(){
+        return {
+            todos:[
+                {id:null, title:'It is cool', completed:true},
+                {id:null, title:'It is cool', completed:false},
+                {id:null, title:'It is cool', completed:true}
+            ]
+        }
+    },
+    computed:{
+        todoCount() {
+            return this.todos.length;
+        }
+    },
+    components:{
+        Todos
+    }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
