@@ -2,7 +2,7 @@
   <div id="todos">
     <ul class="list-group">
       <li class="list-group-item" v-for="(todo, index) in todos" v-bind:class="{'computed':todo.computed}">
-        {{ todo.body }}
+        <router-link :to="{ name: 'todo', params: { id: todo.id }}">{{ todo.body }}</router-link>
         <div class="pull-right">
           <button class="btn btn-xs" @click="completeTodo(todo)" v-bind:class="[todo.computed ? 'btn-warning' : 'btn-success']">
             {{ todo.computed ? 'cancel' : 'computed' }}
@@ -20,7 +20,9 @@ import TodoForm from './TodoForm'
 export default {
     name: 'todos',
     data(){
-        return {todos:[]}
+        return {
+            todos:[]
+        }
     },
     methods:{
         deleteTodo(index) {
@@ -34,9 +36,8 @@ export default {
         TodoForm
     },
     mounted(){
-        var vm = this;
-        this.axios.get('http://laravel-vue.dev/api/todos').then(function (response) {
-            vm.todos = response.data;
+        this.axios.get('http://laravel-vue.dev/api/todos').then(response => {
+            this.todos = response.data;
         });
     }
 }

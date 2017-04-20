@@ -2,7 +2,7 @@
     <div id="todo-form">
         <form @submit.prevent="addTodo(newTodo)">
             <div class="form-group">
-                <input v-model="newTodo.title" type="text" class="form-control" placeholder="Add a new todo">
+                <input v-model="newTodo.body" type="text" class="form-control" placeholder="Add a new todo">
             </div>
             <div class="form-group">
                 <button class="btn btn-success btn-sm">submit</button>
@@ -17,13 +17,13 @@
         props:['todos'],
         data() {
             return {
-                newTodo:{id:null, title:'', completed:false}
+                newTodo:{id:null, body:'', computed:false}
             };
         },
         methods:{
             addTodo(newTodo){
                 this.todos.push(newTodo);
-                this.newTodo = {id:null, title:'', completed:false};
+                this.newTodo = {id:null, body:'', computed:false};
             },
         }
     }
