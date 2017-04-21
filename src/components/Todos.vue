@@ -1,13 +1,13 @@
 <template>
-  <div id="todos">
+  <div id="todos" class="container">
     <ul class="list-group">
-      <li class="list-group-item" v-for="(todo, index) in todos" v-bind:class="{'computed':todo.computed}">
+      <li class="list-group-item" v-for="(todo, index) in todos" v-bind:class="{'completed':todo.completed}">
         <router-link :to="{ name: 'todo', params: { id: todo.id }}">{{ todo.body }}</router-link>
         <div class="pull-right">
-          <button class="btn btn-xs" @click="completeTodo(todo)" v-bind:class="[todo.computed ? 'btn-warning' : 'btn-success']">
-            {{ todo.computed ? 'cancel' : 'computed' }}
+          <button class="btn btn-xs" @click="completeTodo(todo)" v-bind:class="[todo.completed ? 'btn-warning' : 'btn-success']">
+            {{ todo.completed ? 'cancel' : 'completed' }}
           </button>
-          <button class="btn btn-danger btn-xs" @click="deleteTodo(index)">remove</button>
+          <button class="btn btn-danger btn-xs" @click="deleteTodo(index, todo)">remove</button>
         </div>
       </li>
     </ul>
@@ -25,25 +25,35 @@ export default {
         }
     },
     methods:{
-        deleteTodo(index) {
-            this.todos.splice(index, 1);
+        deleteTodo(index, todo) {
+            this.axios.delete('http://laravel-vue.dev/api/todo/'+todo.id).then(response => {
+                console.log(response.data);
+                this.todos.splice(index, 1);
+            });
         },
         completeTodo(todo) {
-            todo.computed = !todo.computed;
+            this.axios.patch('http://laravel-vue.dev/api/todo/'+todo.id+'/completed',).then(response => {
+                todo.completed = response.data.completed;
+                console.log(response.data);
+            });
+        },
+        fetchData(){
+            this.axios.get('http://laravel-vue.dev/api/todos').then(response => {
+                this.todos = response.data;
+            });
         }
+
     },
     components:{
         TodoForm
     },
-    mounted(){
-        this.axios.get('http://laravel-vue.dev/api/todos').then(response => {
-            this.todos = response.data;
-        });
+    created(){
+        this.fetchData();
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .computed{ color: green; text-decoration: line-through; }
+    .completed{ color: green; text-decoration: line-through; }
 </style>

@@ -17,13 +17,13 @@
         props:['todos'],
         data() {
             return {
-                newTodo:{id:null, body:'', computed:false}
+                newTodo:{id:null, body:'', completed:false}
             };
         },
         methods:{
             addTodo(newTodo){
                 this.todos.push(newTodo);
-                this.newTodo = {id:null, body:'', computed:false};
+                this.newTodo = {id:null, body:'', completed:false};
             },
         }
     }
