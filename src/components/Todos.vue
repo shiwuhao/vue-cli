@@ -33,6 +33,7 @@ export default {
         },
         completeTodo(todo) {
             this.axios.patch('http://laravel-vue.dev/api/todo/'+todo.id+'/completed',).then(response => {
+                console.log(todo);
                 todo.completed = response.data.completed;
                 console.log(response.data);
             });
